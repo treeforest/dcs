@@ -1,13 +1,20 @@
 package main
 
 import (
-	"github.com/treeforest/dcs/engine"
+	"github.com/treeforest/dcs/engin"
 	"github.com/treeforest/dcs/parse"
+	"github.com/treeforest/dcs/scheduler"
 )
 
 func main() {
-	engine.Run(engine.Request{
-		Url:"https://book.douban.com/tag/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C",
-		ParseFunc:parse.ParseBookList,
+	e := engine.NewConcurrentEngine(scheduler.CreateQueueScheduler(), 100)
+	e.Run(engine.Request{
+		Url:"https://book.douban.com",
+		ParseFunc:parse.ParseTag,
 	})
+
+	//engine.Run(engine.Request{
+	//	Url:"https://book.douban.com",
+	//	ParseFunc:parse.ParseTag,
+	//})
 }

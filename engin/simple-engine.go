@@ -3,8 +3,7 @@ package engine
 import (
 	"github.com/treeforest/dcs/fetcher"
 	"log"
-	"fmt"
-)
+	)
 
 func Run(seeds ...Request) {
 	var requests []Request
@@ -19,10 +18,10 @@ func Run(seeds ...Request) {
 		requests = requests[1:]
 
 		log.Printf("Fetching url: %s", r.Url)
-		body, err := fetcher.Fetch(r.Url)
+		body, err := fetcher.WebFetch(r.Url)
 
 		if err != nil {
-			log.Printf("Fetch error: %s", r.Url)
+			log.Printf("WebFetch error: %s", r.Url)
 		}
 
 		parseResult := r.ParseFunc(body)
@@ -30,7 +29,7 @@ func Run(seeds ...Request) {
 		requests = append(requests, parseResult.Reqs...)
 
 		for _, item := range parseResult.Items {
-			fmt.Printf("Got item: %s\n", item)
+			log.Printf("Got item: %s\n", item)
 		}
 	}
 }

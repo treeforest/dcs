@@ -1,7 +1,7 @@
 package parse
 
 import (
-	"github.com/treeforest/dcs/engine"
+	"github.com/treeforest/dcs/engin"
 	"regexp"
 	"fmt"
 )
@@ -18,10 +18,13 @@ func ParseBookList(contents []byte) engine.ParseResult {
 	result := engine.ParseResult{}
 
 	for _, m := range matches {
-		result.Items = append(result.Items, string(m[2]))
+		bookName := string(m[2])
+		result.Items = append(result.Items, bookName)
 		result.Reqs = append(result.Reqs, engine.Request{
 			Url:string(m[1]),
-			ParseFunc:engine.NilParse,
+			ParseFunc:func(c []byte) engine.ParseResult {
+				return ParseBookDetail(c, bookName)
+			},
 		})
 	}
 
